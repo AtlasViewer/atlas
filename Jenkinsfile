@@ -23,6 +23,12 @@ pipeline {
 
                     git clean -xfd
                     git reset --hard
+
+                    mkdir out
+                    mkdir out\\windows
+                    mkdir out\\linux
+                    mkdir out\\Android
+                    mkdir out\\macOS
                     '''
                 }
             }
