@@ -7,6 +7,9 @@ using System.IO;
 static class BuildCommand
 {
     private const string IS_DEVELOPMENT_BUILD = "IS_DEVELOPMENT_BUILD";
+    private const string BUILD_OPTIONS_ENV_VAR = "buildOptions";
+
+    
 
     public static void ProcessCLIBuild() {
         Console.WriteLine("> PERFORM BUILD");
@@ -19,7 +22,14 @@ static class BuildCommand
         var buildOpts = GetBuildOptions();
         var fixedPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
-        var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedPath, buildTarget, buildOpts);
+        BuildPlayerOptions BPO = new BuildPlayerOptions();
+        BPO.target = buildTarget;
+        BPO.targetGroup = targetGroup;
+        BPO.options = buildOpts;
+        BPO.locationPathName = fixedPath;
+
+        var buildReport = BuildPipeline.BuildPlayer(BPO);
+        
 
         if(buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
             throw new Exception($"Build ended with {buildReport.summary.result} status");
@@ -29,7 +39,7 @@ static class BuildCommand
 
     static bool IsDevelopmentType() {
         if(TryGetEnv(IS_DEVELOPMENT_BUILD, out string val)) {
-            return bool.parse(value);
+            return bool.Parse(val);
         }
 
         Console.WriteLine("> NO DEV_ENV FLAG FOUND, DEFAULTING TO NO");
@@ -44,13 +54,13 @@ static class BuildCommand
     static BuildTarget GetBuildTarget() {
         string buildTgtName = GetArgument("buildTarget");
 
-        if(buildTargetName.TryConvertToEnum(out BuildTarget tgt))
+        if(buildTgtName.TryConvertToEnum(out BuildTarget tgt))
             return tgt;
 
         return BuildTarget.NoTarget;
     }
 
-    static BuildTargetGroup(BuildTarget tgt) {
+    static BuildTargetGroup GetBuildTargetGroup(BuildTarget tgt) {
         string tgtGroup;
         string platform = tgt.ToString();
 
@@ -152,6 +162,7 @@ static class BuildCommand
 
         return BuildOptions.None;
     }
+
     static string[] GetEnabledScenes()
     {
         return (
