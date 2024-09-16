@@ -20,7 +20,7 @@ pipeline {
             environment {
                 BUILD_NAME = "Windows-${currentBuild.number}"
                 String buildTarget = "Win64"
-                String outputFolder = "out\\windows\\AtlasViewer-win64.exe"
+                String outputFolder = "out\\windows\\"
             }
 
             steps {
@@ -28,7 +28,7 @@ pipeline {
                     bat '''
                     @echo off
 
-                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\out\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
+                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\%outputFolder%\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
                     '''
                 }
             }
@@ -42,7 +42,7 @@ pipeline {
             environment {
                 BUILD_NAME = "Linux-${currentBuild.number}"
                 String buildTarget = "Linux64"
-                String outputFolder = "out\\linux\\AtlasViewer-linux64"
+                String outputFolder = "out\\linux\\"
             }
 
             steps {
@@ -50,7 +50,7 @@ pipeline {
                     bat '''
                     @echo off
 
-                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\out\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
+                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\%outputFolder%\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
                     '''
                 }
             }
