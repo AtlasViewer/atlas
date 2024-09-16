@@ -12,9 +12,15 @@ pipeline {
     }
 
     stages {
-        stage("Build on Windows") {
+        stage("Build Windows") {
             agent {
                 label 'windows'
+            }
+
+            environment {
+                BUILD_NAME = "Windows-${currentBuild.number}"
+                String buildTarget = "Windows"
+                String outputFolder = "out\\win64"
             }
 
             steps {
@@ -22,7 +28,29 @@ pipeline {
                     bat '''
                     @echo off
 
-                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget win64 -customBuildPath "%cd%\\out\\" -customBuildName "AtlasViewer" -executeMethod BuildCommand.ProcessCLIBuild
+                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\out\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
+                    '''
+                }
+            }
+        }
+
+        stage("Build Linux") {
+            agent {
+                label 'windows'
+            }
+
+            environment {
+                BUILD_NAME = "Linux-${currentBuild.number}"
+                String buildTarget = "Linux"
+                String outputFolder = "out\\linux64"
+            }
+
+            steps {
+                script {
+                    bat '''
+                    @echo off
+
+                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\out\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
                     '''
                 }
             }
