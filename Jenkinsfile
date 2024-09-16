@@ -20,7 +20,7 @@ pipeline {
             environment {
                 BUILD_NAME = "Windows-${currentBuild.number}"
                 String buildTarget = "Win64"
-                String outputFolder = "out\\win64"
+                String outputFolder = "out\\windows\\AtlasViewer-win64.exe"
             }
 
             steps {
@@ -42,7 +42,7 @@ pipeline {
             environment {
                 BUILD_NAME = "Linux-${currentBuild.number}"
                 String buildTarget = "Linux64"
-                String outputFolder = "out\\linux64"
+                String outputFolder = "out\\linux\\AtlasViewer-linux64"
             }
 
             steps {
