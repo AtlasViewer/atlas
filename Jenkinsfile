@@ -21,11 +21,6 @@ pipeline {
                     '''
                 }
             }
-
-            post {
-                always {
-                }
-            }
         }
     }
 }
