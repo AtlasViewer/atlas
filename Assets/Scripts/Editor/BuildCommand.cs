@@ -109,7 +109,7 @@ static class BuildCommand
         Console.WriteLine(":: Received customBuildPath " + buildPath);
         if (buildPath == "")
         {
-            throw new Exception("customBuildPath argument is missing");
+            return ".\\output\\";
         }
         return buildPath;
     }
@@ -120,7 +120,7 @@ static class BuildCommand
         Console.WriteLine(":: Received customBuildName " + buildName);
         if (buildName == "")
         {
-            throw new Exception("customBuildName argument is missing");
+            return "PrivateBuild"; // A default name
         }
         return buildName;
     }
