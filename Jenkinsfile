@@ -19,7 +19,7 @@ pipeline {
 
             environment {
                 BUILD_NAME = "Windows-${currentBuild.number}"
-                String buildTarget = "Windows"
+                String buildTarget = "Win64"
                 String outputFolder = "out\\win64"
             }
 
@@ -41,7 +41,7 @@ pipeline {
 
             environment {
                 BUILD_NAME = "Linux-${currentBuild.number}"
-                String buildTarget = "Linux"
+                String buildTarget = "Linux64"
                 String outputFolder = "out\\linux64"
             }
 
