@@ -39,7 +39,7 @@ pipeline {
             }
 
             environment {
-                BUILD_NAME = "Windows-${currentBuild.number}"
+                buildNumber = "${currentBuild.number}"
                 String buildTarget = "Win64"
             }
 
@@ -70,8 +70,8 @@ pipeline {
             }
 
             environment {
-                BUILD_NAME = "Linux-${currentBuild.number}"
-                String buildTarget = "Linux64"
+                buildNumber = "${currentBuild.number}"
+                String buildTarget = "Linux"
             }
 
             steps {
@@ -101,7 +101,7 @@ pipeline {
             }
 
             environment {
-                BUILD_NAME = "MacOS-${currentBuild.number}"
+                buildNumber = "${currentBuild.number}"
                 String buildTarget = "macOS"
             }
 
@@ -132,7 +132,7 @@ pipeline {
             }
 
             environment {
-                BUILD_NAME = "Android-${currentBuild.number}"
+                buildNumber = "${currentBuild.number}"
                 String buildTarget = "Android"
             }
 
@@ -140,7 +140,7 @@ pipeline {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformAndroid
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformAndroid
                     '''
                 }
             }
