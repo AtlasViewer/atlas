@@ -3,6 +3,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 
 static class BuildCommand
 {
@@ -19,12 +20,13 @@ static class BuildCommand
 
         var buildPath = GetBuildPath();
         var buildName = GetBuildName();
-        var buildOpts = GetBuildOptions();
+        var buildOpts = BuildOptions.None;
+
         var fixedPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
         var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedPath, buildTarget, buildOpts);
 
-        string reportStr = $"Build Report\n\n\n\nSTATUS : {buildReport.summary.result}\n\n\n\nSummary : {buildReport.summary}\n\n";
+        string reportStr = $"Build Report\n\n\n\nSTATUS : {buildReport.summary.result}\n\n\n\nSummary : {buildReport.summary.Description()}\n\n";
         File.WriteAllText("report.txt", reportStr);
         
         if(buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
@@ -129,34 +131,6 @@ static class BuildCommand
             buildName += EditorUserBuildSettings.buildAppBundle ? ".aab" : ".apk";
         }
         return buildPath + buildName;
-    }
-
-    static BuildOptions GetBuildOptions()
-    {
-        if (TryGetEnv(BUILD_OPTIONS_ENV_VAR, out string envVar)) {
-            string[] allOptionVars = envVar.Split(',');
-            BuildOptions allOptions = BuildOptions.None;
-            BuildOptions option;
-            string optionVar;
-            int length = allOptionVars.Length;
-
-            Console.WriteLine($":: Detecting {BUILD_OPTIONS_ENV_VAR} env var with {length} elements ({envVar})");
-
-            for (int i = 0; i < length; i++) {
-                optionVar = allOptionVars[i];
-
-                if (optionVar.TryConvertToEnum(out option)) {
-                    allOptions |= option;
-                }
-                else {
-                    Console.WriteLine($":: Cannot convert {optionVar} to {nameof(BuildOptions)} enum, skipping it.");
-                }
-            }
-
-            return allOptions;
-        }
-
-        return BuildOptions.None;
     }
 
     static string[] GetEnabledScenes()
