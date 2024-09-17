@@ -30,6 +30,8 @@ static class BuildCommand
         BPO.scenes = GetEnabledScenes();
 
         var buildReport = BuildPipeline.BuildPlayer(BPO);
+        string reportStr = $"Build Report\n\n\n\nSTATUS : {buildReport.summary.result}\n\n\n\nSummary : {buildReport.summary}\n\n";
+        File.WriteAllText("report.txt", reportStr);
         
         if(buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
             throw new Exception($"Build ended with {buildReport.summary.result} status");
