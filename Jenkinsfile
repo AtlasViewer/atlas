@@ -154,18 +154,18 @@ pipeline {
             }
 
             steps {
+                withCredentials([string(credentialsId: "AtlasViewerDiscordWebHook", variable: "webhook")])
                 script {
                     bat '''
                     git clean -xfd
                     git reset --hard
                     '''
                 }
-            }
 
-            post {
-                always {
-                    deleteDir()
-                }
+
+                deleteDir()
+
+                discordSend customAvatarUrl: '', customFile: '', customUsername: '', description: '', enableArtifactsList: true, footer: '', image: '', link: '', result: '', scmWebUrl: '', thumbnail: '', title: 'Atlas Viewer Automatic Builds', webhookURL: "${webhook}"
             }
         }
     }
