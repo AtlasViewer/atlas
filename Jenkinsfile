@@ -35,7 +35,10 @@ pipeline {
 
             post {
                 always {
-                    discordSend customAvatarUrl: '', customFile: '', customUsername: '', description: 'Build Starting', enableArtifactsList: false, footer: '', image: '', link: env.BUILD_URL, result: currentBuild.currentResult, scmWebUrl: 'https://github.com/AtlasViewer/atlas', thumbnail: '', title: 'Atlas Viewer Automatic Builds', webhookURL: WEBHOOK_URL
+                    withFolderProperties{
+
+                        discordSend customAvatarUrl: '', customFile: '', customUsername: '', description: 'Build Starting', enableArtifactsList: false, footer: '', image: '', link: env.BUILD_URL, result: currentBuild.currentResult, scmWebUrl: 'https://github.com/AtlasViewer/atlas', thumbnail: '', title: 'Atlas Viewer Automatic Builds', webhookURL: "${env.WEBHOOK_URL}"
+                    }
                     
                 }
             }
@@ -184,8 +187,10 @@ pipeline {
             }
             post {
                 always {
+                    withFolderProperties{
 
-                    discordSend customAvatarUrl: '', customFile: '', customUsername: '', description: 'Build Completed', enableArtifactsList: true, footer: '', image: '', link: env.BUILD_URL, result: currentBuild.currentResult, scmWebUrl: 'https://github.com/AtlasViewer/atlas', thumbnail: '', title: 'Atlas Viewer Automatic Builds', webhookURL: WEBHOOK_URL
+                        discordSend customAvatarUrl: '', customFile: '', customUsername: '', description: 'Build Completed', enableArtifactsList: true, footer: '', image: '', link: env.BUILD_URL, result: currentBuild.currentResult, scmWebUrl: 'https://github.com/AtlasViewer/atlas', thumbnail: '', title: 'Atlas Viewer Automatic Builds', webhookURL: "${env.WEBHOOK_URL}"
+                    }
 
                     deleteDir()
                 }
