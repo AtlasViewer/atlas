@@ -166,10 +166,6 @@ pipeline {
             }
 
             steps {
-                withCredentials([string(credentialsId: "AtlasViewerDiscordWebHook", variable: "webhook")]) {
-
-                    discordSend customAvatarUrl: '', customFile: '', customUsername: '', description: '', enableArtifactsList: true, footer: '', image: '', link: '', result: '', scmWebUrl: '', thumbnail: '', title: 'Atlas Viewer Automatic Builds', webhookURL: "${webhook}"
-                }
                 script {
                     bat '''
                     git clean -xfd
@@ -178,8 +174,17 @@ pipeline {
                 }
 
 
-                deleteDir()
+            }
+            post {
+                always {
 
+                    withCredentials([string(credentialsId: "AtlasViewerDiscordWebHook", variable: "webhook")]) {
+
+                        discordSend customAvatarUrl: '', customFile: '', customUsername: '', description: 'Atlas Viewer', enableArtifactsList: true, footer: '', image: '', link: env.BUILD_URL, result: currentBuild.currentResult, scmWebUrl: 'https://github.com/AtlasViewer/atlas', thumbnail: '', title: 'Atlas Viewer Automatic Builds', webhookURL: webhook
+                    }
+
+                    deleteDir()
+                }
             }
         }
     }
