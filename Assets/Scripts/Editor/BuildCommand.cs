@@ -24,7 +24,7 @@ public static class BuildCommand
 
     public static void ProcessBuild(string path, BuildTarget target) {
         var outputPath = GetArgument("outputPath");
-        outputPath += $"\\${path}";
+        outputPath += $"\\{path}";
 
         var opts = new BuildPlayerOptions {
             scenes = GetEnabledScenes(),
