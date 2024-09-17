@@ -4,12 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting;
+using UnityEditor.Build.Reporting;
 
-static class BuildCommand
+public static class BuildCommand
 {
     private const string IS_DEVELOPMENT_BUILD = "IS_DEVELOPMENT_BUILD";
-    private const string BUILD_OPTIONS_ENV_VAR = "buildOptions";
 
+
+    public static void ProcessBuild(string path, BuildTarget target) {
+        var opts = new BuildPlayerOptions {
+            scenes = GetEnabledScenes(),
+            target = target,
+            locationPathName = path
+        };
+
+        BuildPipeline.BuildPlayer(opts);
+    }
     
 
     public static void ProcessCLIBuild() {

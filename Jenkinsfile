@@ -48,7 +48,7 @@ pipeline {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\%outputFolder%\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%\\%outputFolder%\\" -executeMethod BuildCommand.ProcessBuild
                     '''
                 }
             }
