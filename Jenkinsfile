@@ -47,7 +47,7 @@ pipeline {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformWindows
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformWindows
                     '''
 
                     bat '''
@@ -78,7 +78,7 @@ pipeline {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformLinux
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber%  -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformLinux
                     '''
 
                     bat '''
@@ -109,7 +109,7 @@ pipeline {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformMacOS
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber%  -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformMacOS
                     '''
 
                     bat '''
