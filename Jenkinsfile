@@ -49,6 +49,17 @@ pipeline {
 
                     Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformWindows
                     '''
+
+                    bat '''
+                    cd out\\windows
+                    tar -cvf ../../Windows.tgz .
+                    '''
+                }
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: "Windows.tgz"
                 }
             }
         }
@@ -69,6 +80,17 @@ pipeline {
 
                     Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformLinux
                     '''
+
+                    bat '''
+                    cd out\\linux
+                    tar -cvf ../../Linux.tgz .
+                    '''
+                }
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: "Linux.tgz"
                 }
             }
         }
@@ -89,6 +111,17 @@ pipeline {
 
                     Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformMacOS
                     '''
+
+                    bat '''
+                    cd out\\macOS
+                    tar -cvf ../../MacOS.tgz .
+                    '''
+                }
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: "MacOS.tgz"
                 }
             }
         }
@@ -109,6 +142,33 @@ pipeline {
 
                     Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformAndroid
                     '''
+                }
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: "out\\Android\\*.apk"
+                }
+            }
+        }
+
+        stage("Clean Up Build Folder") {
+            agent {
+                label 'windows'
+            }
+
+            steps {
+                script {
+                    bat '''
+                    git clean -xfd
+                    git reset --hard
+                    '''
+                }
+            }
+
+            post {
+                always {
+                    deleteDir()
                 }
             }
         }
