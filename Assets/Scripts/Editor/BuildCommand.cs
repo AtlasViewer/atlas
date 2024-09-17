@@ -27,10 +27,10 @@ static class BuildCommand
         BPO.targetGroup = targetGroup;
         BPO.options = buildOpts;
         BPO.locationPathName = fixedPath;
+        BPO.scenes = GetEnabledScenes();
 
         var buildReport = BuildPipeline.BuildPlayer(BPO);
         
-
         if(buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
             throw new Exception($"Build ended with {buildReport.summary.result} status");
 
