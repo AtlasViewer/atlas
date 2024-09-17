@@ -22,14 +22,8 @@ static class BuildCommand
         var buildOpts = GetBuildOptions();
         var fixedPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
-        BuildPlayerOptions BPO = new BuildPlayerOptions();
-        BPO.target = buildTarget;
-        BPO.targetGroup = targetGroup;
-        BPO.options = buildOpts;
-        BPO.locationPathName = fixedPath;
-        BPO.scenes = GetEnabledScenes();
+        var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedPath, buildTarget, buildOpts);
 
-        var buildReport = BuildPipeline.BuildPlayer(BPO);
         string reportStr = $"Build Report\n\n\n\nSTATUS : {buildReport.summary.result}\n\n\n\nSummary : {buildReport.summary}\n\n";
         File.WriteAllText("report.txt", reportStr);
         
