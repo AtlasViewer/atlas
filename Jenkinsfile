@@ -102,7 +102,7 @@ pipeline {
 
             environment {
                 buildNumber = "${currentBuild.number}"
-                String buildTarget = "macOS"
+                String buildTarget = "OSXUniversal"
             }
 
             steps {
