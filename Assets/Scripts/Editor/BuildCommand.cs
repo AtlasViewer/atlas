@@ -8,80 +8,31 @@ using UnityEditor.Build.Reporting;
 
 public static class BuildCommand
 {
-    private const string IS_DEVELOPMENT_BUILD = "IS_DEVELOPMENT_BUILD";
+    public static void PerformWindows() {
+        ProcessBuild("out\\windows\\AtlasViewer-Win64.exe", BuildTarget.StandaloneWindows64);
+    }
+    public static void PerformLinux() {
+        ProcessBuild("out\\linux\\AtlasViewer-Linux", BuildTarget.StandaloneLinux64);
+    }
+    public static void PerformMacOS() {
+        ProcessBuild("out\\macOS\\AtlasViewer-MacOS.app", BuildTarget.StandaloneOSX);
+    }
+    public static void PerformAndroid() {
+        ProcessBuild("out\\android\\AtlasViewer-Android.apk", BuildTarget.Android);
+    }
 
 
     public static void ProcessBuild(string path, BuildTarget target) {
+        var outputPath = GetArgument("outputPath");
+        outputPath += $"\\${path}";
+
         var opts = new BuildPlayerOptions {
             scenes = GetEnabledScenes(),
             target = target,
-            locationPathName = path
+            locationPathName = outputPath
         };
 
         BuildPipeline.BuildPlayer(opts);
-    }
-    
-
-    public static void ProcessCLIBuild() {
-        Console.WriteLine("> PERFORM BUILD");
-
-        var buildTarget = GetBuildTarget();
-        var targetGroup = GetBuildTargetGroup(buildTarget);
-
-        var buildPath = GetBuildPath();
-        var buildName = GetBuildName();
-        var buildOpts = BuildOptions.None;
-
-        var fixedPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
-
-        var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedPath, buildTarget, buildOpts);
-
-        string reportStr = $"Build Report\n\n\n\nSTATUS : {buildReport.summary.result}\n\n\n\nSummary : {buildReport.summary.Description()}\n\n";
-        File.WriteAllText("report.txt", reportStr);
-        
-        if(buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
-            throw new Exception($"Build ended with {buildReport.summary.result} status");
-
-        Console.WriteLine("> BUILD DONE");
-    }
-
-    static bool IsDevelopmentType() {
-        if(TryGetEnv(IS_DEVELOPMENT_BUILD, out string val)) {
-            return bool.Parse(val);
-        }
-
-        Console.WriteLine("> NO DEV_ENV FLAG FOUND, DEFAULTING TO NO");
-        return false;
-    }
-
-    private static void HandleDevelopmentBuildType(bool isDevBuild) {
-        EditorUserBuildSettings.development = isDevBuild;
-        PlayerSettings.SplashScreen.show = isDevBuild;
-    }
-
-    static BuildTarget GetBuildTarget() {
-        string buildTgtName = GetArgument("buildTarget");
-
-        if(buildTgtName.TryConvertToEnum(out BuildTarget tgt))
-            return tgt;
-
-        return BuildTarget.NoTarget;
-    }
-
-    static BuildTargetGroup GetBuildTargetGroup(BuildTarget tgt) {
-        string tgtGroup;
-        string platform = tgt.ToString();
-
-        if(tgt.ToString().ToLower().Contains("standalone"))
-            tgtGroup="Standalone";
-        else if(tgt.ToString().ToLower().Contains("wsa"))
-            tgtGroup = "WSA";
-        else tgtGroup = platform;
-
-        if (tgtGroup.TryConvertToEnum(out BuildTargetGroup tgtGrp))
-            return tgtGrp;
-
-        return BuildTargetGroup.Unknown;
     }
 
     static bool TryGetEnv(string key, out string val) {
@@ -109,38 +60,6 @@ public static class BuildCommand
 
         value = (TEnum)Enum.Parse(typeof(TEnum), strEnumValue);
         return true;
-    }
-
-    static string GetBuildPath()
-    {
-        string buildPath = GetArgument("customBuildPath");
-        Console.WriteLine(":: Received customBuildPath " + buildPath);
-        if (buildPath == "")
-        {
-            return ".\\output\\";
-        }
-        return buildPath;
-    }
-
-    static string GetBuildName()
-    {
-        string buildName = GetArgument("customBuildName");
-        Console.WriteLine(":: Received customBuildName " + buildName);
-        if (buildName == "")
-        {
-            return "PrivateBuild"; // A default name
-        }
-        return buildName;
-    }
-
-    static string GetFixedBuildPath(BuildTarget buildTarget, string buildPath, string buildName)
-    {
-        if (buildTarget.ToString().ToLower().Contains("windows")) {
-            buildName += ".exe";
-        } else if (buildTarget == BuildTarget.Android) {
-            buildName += EditorUserBuildSettings.buildAppBundle ? ".aab" : ".apk";
-        }
-        return buildPath + buildName;
     }
 
     static string[] GetEnabledScenes()

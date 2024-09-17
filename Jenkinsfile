@@ -41,14 +41,13 @@ pipeline {
             environment {
                 BUILD_NAME = "Windows-${currentBuild.number}"
                 String buildTarget = "Win64"
-                String outputFolder = "out\\windows\\"
             }
 
             steps {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%\\%outputFolder%\\" -executeMethod BuildCommand.ProcessBuild
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformWindows
                     '''
                 }
             }
@@ -62,14 +61,13 @@ pipeline {
             environment {
                 BUILD_NAME = "Linux-${currentBuild.number}"
                 String buildTarget = "Linux64"
-                String outputFolder = "out\\linux\\"
             }
 
             steps {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\%outputFolder%\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformLinux
                     '''
                 }
             }
@@ -83,14 +81,13 @@ pipeline {
             environment {
                 BUILD_NAME = "MacOS-${currentBuild.number}"
                 String buildTarget = "macOS"
-                String outputFolder = "out\\macOS\\"
             }
 
             steps {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\%outputFolder%\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformMacOS
                     '''
                 }
             }
@@ -104,14 +101,13 @@ pipeline {
             environment {
                 BUILD_NAME = "Android-${currentBuild.number}"
                 String buildTarget = "Android"
-                String outputFolder = "out\\Android\\"
             }
 
             steps {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -batchmode -buildTarget %buildTarget% -customBuildPath "%cd%\\%outputFolder%\\" -customBuildName "%BUILD_NAME%" -executeMethod BuildCommand.ProcessCLIBuild
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformAndroid
                     '''
                 }
             }
