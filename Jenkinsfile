@@ -27,7 +27,7 @@ pipeline {
                     mkdir out
                     mkdir out\\windows
                     mkdir out\\linux
-                    mkdir out\\Android
+                    mkdir out\\android
                     mkdir out\\macOS
                     '''
                 }
@@ -40,14 +40,13 @@ pipeline {
 
             environment {
                 buildNumber = "${currentBuild.number}"
-                String buildTarget = "Win64"
             }
 
             steps {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformWindows
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -outputPath "%cd%" -executeMethod BuildCommand.PerformWindows
                     '''
 
                     bat '''
@@ -71,14 +70,13 @@ pipeline {
 
             environment {
                 buildNumber = "${currentBuild.number}"
-                String buildTarget = "Linux"
             }
 
             steps {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber%  -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformLinux
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -outputPath "%cd%" -executeMethod BuildCommand.PerformLinux
                     '''
 
                     bat '''
@@ -102,14 +100,13 @@ pipeline {
 
             environment {
                 buildNumber = "${currentBuild.number}"
-                String buildTarget = "OSXUniversal"
             }
 
             steps {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber%  -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformMacOS
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -outputPath "%cd%" -executeMethod BuildCommand.PerformMacOS
                     '''
 
                     bat '''
@@ -133,14 +130,13 @@ pipeline {
 
             environment {
                 buildNumber = "${currentBuild.number}"
-                String buildTarget = "Android"
             }
 
             steps {
                 script {
                     bat '''
 
-                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -buildTarget %buildTarget% -outputPath "%cd%" -executeMethod BuildCommand.PerformAndroid
+                    Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -outputPath "%cd%" -executeMethod BuildCommand.PerformAndroid
                     '''
                 }
             }
