@@ -51,8 +51,8 @@ pipeline {
 
                     bat '''
                     cd out\\windows
-                    del /S /Q *DoNotShip*
-                    rmdir /S /Q *DoNotShip*
+                    del /S /Q *DoNotShip* || true
+                    rmdir /S /Q *DoNotShip* || true
                     tar -cvf ../../Windows.tgz .
                     '''
                 }
@@ -83,8 +83,8 @@ pipeline {
 
                     bat '''
                     cd out\\linux
-                    del /S /Q *DoNotShip*
-                    rmdir /S /Q *DoNotShip*
+                    del /S /Q *DoNotShip* || true
+                    rmdir /S /Q *DoNotShip* || true
                     tar -cvf ../../Linux.tgz .
                     '''
                 }
@@ -115,8 +115,8 @@ pipeline {
 
                     bat '''
                     cd out\\macOS
-                    del /S /Q *DoNotShip*
-                    rmdir /S /Q *DoNotShip*
+                    del /S /Q *DoNotShip* || true
+                    rmdir /S /Q *DoNotShip* || true
                     tar -cvf ../../MacOS.tgz .
                     '''
                 }
@@ -147,8 +147,8 @@ pipeline {
 
                     bat '''
                     cd out\\android
-                    del /S /Q *DoNotShip*
-                    rmdir /S /Q *DoNotShip*
+                    del /S /Q *DoNotShip* || true
+                    rmdir /S /Q *DoNotShip* || true
                     '''
                 }
             }
