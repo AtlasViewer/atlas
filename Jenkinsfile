@@ -51,6 +51,8 @@ pipeline {
 
                     bat '''
                     cd out\\windows
+                    del /S /Q *DoNotShip*
+                    rmdir /S /Q *DoNotShip*
                     tar -cvf ../../Windows.tgz .
                     '''
                 }
@@ -81,6 +83,8 @@ pipeline {
 
                     bat '''
                     cd out\\linux
+                    del /S /Q *DoNotShip*
+                    rmdir /S /Q *DoNotShip*
                     tar -cvf ../../Linux.tgz .
                     '''
                 }
@@ -111,6 +115,8 @@ pipeline {
 
                     bat '''
                     cd out\\macOS
+                    del /S /Q *DoNotShip*
+                    rmdir /S /Q *DoNotShip*
                     tar -cvf ../../MacOS.tgz .
                     '''
                 }
@@ -137,6 +143,12 @@ pipeline {
                     bat '''
 
                     Unity -quit -projectPath "%cd%" -logfile - -batchmode -buildNumber %buildNumber% -outputPath "%cd%" -executeMethod BuildCommand.PerformAndroid
+                    '''
+
+                    bat '''
+                    cd out\\android
+                    del /S /Q *DoNotShip*
+                    rmdir /S /Q *DoNotShip*
                     '''
                 }
             }
