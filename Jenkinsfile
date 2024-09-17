@@ -147,7 +147,7 @@ pipeline {
 
             post {
                 always {
-                    archiveArtifacts artifacts: "out\\Android\\*.apk"
+                    archiveArtifacts artifacts: "out\\android\\*.apk"
                 }
             }
         }
